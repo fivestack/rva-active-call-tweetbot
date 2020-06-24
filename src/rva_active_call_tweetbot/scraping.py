@@ -5,18 +5,15 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 RVA_ACTIVE_CALLS_URL = "https://apps.richmondgov.com/applications/activecalls/"
-
-
-def get_firefox_profile() -> 'webdriver.FirefoxProfile':
-    profile = webdriver.FirefoxProfile()
-    profile.set_preference("browser.privatebrowsing.autostart", True)
-    return profile
+SECONDS_TO_LET_JS_LOAD = 2
 
 
 def get_firefox_driver() -> 'webdriver.Firefox':
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("browser.privatebrowsing.autostart", True)
     options = Options()
     options.add_argument("--headless")
-    return webdriver.Firefox(firefox_profile=get_firefox_profile(), options=options)
+    return webdriver.Firefox(firefox_profile=profile, options=options)
 
 
 def parse_all_calls_into_list_of_calls(all_calls: 'List[str]') -> 'List[List[str]]':
@@ -43,7 +40,7 @@ def parse_active_call(call_attributes: 'List[str]') -> dict:
 def get_active_calls() -> 'List[dict]':
     driver = get_firefox_driver()
     driver.get(RVA_ACTIVE_CALLS_URL)
-    time.sleep(2)
+    time.sleep(SECONDS_TO_LET_JS_LOAD)
     active_calls_div = driver.find_element_by_id("tblActiveCallsListing")
     active_calls_rows = active_calls_div.find_elements_by_xpath("//tbody/tr/td")
     all_call_attributes = [attribute.text for attribute in active_calls_rows]
