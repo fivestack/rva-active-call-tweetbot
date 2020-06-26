@@ -6,4 +6,4 @@ PROJECT_ROOT = PACKAGE_ROOT.parent
 
 sys.path.insert(0, str(PROJECT_ROOT.absolute()))
 
-from src import rva_active_call_tweetbot
+from src.rva_active_call_tweetbot import get_active_call_data

@@ -1,5 +1,3 @@
-import time
-
 import pandas as pd
 
 RVA_ACTIVE_CALLS_URL = "https://apps.richmondgov.com/applications/activecalls/home/activecalls"
@@ -28,14 +26,3 @@ def get_snapshot_delta(previous_snapshot: 'pd.DataFrame', next_snapshot: 'pd.Dat
     diffs.rename(columns=columns, inplace=True)
     diffs = diffs[next_snapshot.columns]
     return diffs
-
-
-def sample_active_calls(sample_period: int) -> 'pd.DataFrame':
-    first_sample = get_current_snapshot()
-    time.sleep(sample_period)
-    second_sample = get_current_snapshot()
-    return get_snapshot_delta(first_sample, second_sample)
-
-
-if __name__ == "__main__":
-    print(sample_active_calls(5))
